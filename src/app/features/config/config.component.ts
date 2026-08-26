@@ -61,6 +61,7 @@ export class ConfigComponent implements OnInit {
   tautulliKey = '';
   tautulliHasStored = signal(false);
   tautulliTestStatus = signal<'idle' | 'testing' | 'ok' | 'error'>('idle');
+  tautulliTestMessage = signal('');
 
   // *arr
   sonarrInstances = signal<InstanceFormState[]>([]);
@@ -160,6 +161,7 @@ export class ConfigComponent implements OnInit {
 
   async testTautulli(): Promise<void> {
     this.tautulliTestStatus.set('testing');
+    this.tautulliTestMessage.set('');
     try {
       await this.configSvc.testTautulli({
         url: this.tautulliUrl,
@@ -168,7 +170,7 @@ export class ConfigComponent implements OnInit {
       this.tautulliTestStatus.set('ok');
     } catch (e: any) {
       this.tautulliTestStatus.set('error');
-      this.error.set(`Tautulli: ${e.message}`);
+      this.tautulliTestMessage.set(e.message);
     }
   }
 

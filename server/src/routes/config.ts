@@ -8,6 +8,7 @@ import {
   ArrInstanceSchema,
   maskConfig,
   mergeWithStored,
+  restoreSecret,
 } from '../config/schema.js';
 import { loadConfig, saveConfig } from '../config/store.js';
 import { httpRequest } from '../util/http.js';
@@ -73,10 +74,14 @@ configRouter.post('/test', async (req: Request, res: Response) => {
     if (!type || !config) {
       return res.status(400).json({ ok: false, error: 'type + config required' });
     }
+    const stored = await loadConfig();
 
     switch (type) {
       case 'plex': {
-        const parsed = PlexConfigSchema.parse(config);
+        const parsed = PlexConfigSchema.parse({
+          ...config,
+          token: restoreSecret(config.token, stored.plex?.token),
+        });
         const data = await httpRequest<any>(`${parsed.url}/`, {
           headers: {
             Accept: 'application/json',
@@ -91,7 +96,10 @@ configRouter.post('/test', async (req: Request, res: Response) => {
         return res.json({ ok: true, data: { serverName: name } });
       }
       case 'tautulli': {
-        const parsed = TautulliConfigSchema.parse(config);
+        const parsed = TautulliConfigSchema.parse({
+          ...config,
+          apiKey: restoreSecret(config.apiKey, stored.tautulli?.apiKey),
+        });
         const url = `${parsed.url}/api/v2?apikey=${encodeURIComponent(
           parsed.apiKey
         )}&cmd=arnold`;
@@ -103,9 +111,12 @@ configRouter.post('/test', async (req: Request, res: Response) => {
       }
       case 'sonarr':
       case 'radarr': {
+        const storedList = type === 'sonarr' ? stored.sonarr : stored.radarr;
+        const prev = storedList.find((i) => i.id === config.id);
         const parsed = ArrInstanceSchema.parse({
           ...config,
           id: config.id || 'test',
+          apiKey: restoreSecret(config.apiKey, prev?.apiKey),
         });
         const info = await testArrConnection(parsed, type);
         return res.json({ ok: true, data: info });

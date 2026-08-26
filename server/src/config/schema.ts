@@ -75,15 +75,20 @@ export function maskConfig(cfg: AppConfig): MaskedAppConfig {
 }
 
 /**
+ * If `newVal` is empty or still the masked placeholder (i.e. the user didn't
+ * touch the field), fall back to the real stored secret.
+ */
+export function restoreSecret(newVal: string, oldVal: string | undefined): string {
+  return newVal && newVal !== '' && !newVal.startsWith('••••')
+    ? newVal
+    : (oldVal ?? newVal);
+}
+
+/**
  * Merge an incoming (possibly masked) config from the frontend with the existing
  * stored config, preserving secrets that were sent back as the masked placeholder.
  */
 export function mergeWithStored(incoming: AppConfig, stored: AppConfig): AppConfig {
-  const restoreSecret = (newVal: string, oldVal: string | undefined): string =>
-    newVal && newVal !== '' && !newVal.startsWith('••••')
-      ? newVal
-      : (oldVal ?? newVal);
-
   return {
     plex: incoming.plex
       ? {

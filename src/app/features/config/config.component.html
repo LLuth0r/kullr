@@ -57,7 +57,7 @@
       @if (tautulliTestStatus() === 'ok') {
         <span class="check">✓ Connected</span>
       } @else if (tautulliTestStatus() === 'error') {
-        <span class="check err">✗ Failed</span>
+        <span class="check err">✗ {{ tautulliTestMessage() }}</span>
       }
     </div>
 
