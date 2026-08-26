@@ -151,6 +151,30 @@
             <span class="check sm muted">Root: {{ inst.rootFolders.join(', ') }}</span>
           }
         </div>
+        <button
+          type="button"
+          class="path-map-toggle"
+          (click)="togglePathMapping('sonarr', inst.id)"
+        >
+          {{ inst.showPathMapping ? '− Hide path mapping' : '+ Path mapping (if Plex sees a different path)' }}
+        </button>
+        @if (inst.showPathMapping) {
+          <div class="path-map">
+            <p class="path-map-hint">
+              Only needed if Plex reports a file path that doesn't match Sonarr's
+              root folders (e.g. Plex mounts <code>/mnt/user/data</code>, Sonarr
+              mounts <code>/data</code> for the same share). Leave blank otherwise.
+            </p>
+            <div class="field">
+              <label>Plex path prefix</label>
+              <input type="text" [(ngModel)]="inst.pathMapFrom" placeholder="/mnt/user/data" />
+            </div>
+            <div class="field">
+              <label>Sonarr path prefix</label>
+              <input type="text" [(ngModel)]="inst.pathMapTo" placeholder="/data" />
+            </div>
+          </div>
+        }
       </div>
     }
     <button class="btn-add" type="button" (click)="addSonarr()">+ Add Sonarr instance</button>
@@ -205,6 +229,30 @@
             <span class="check sm muted">Root: {{ inst.rootFolders.join(', ') }}</span>
           }
         </div>
+        <button
+          type="button"
+          class="path-map-toggle"
+          (click)="togglePathMapping('radarr', inst.id)"
+        >
+          {{ inst.showPathMapping ? '− Hide path mapping' : '+ Path mapping (if Plex sees a different path)' }}
+        </button>
+        @if (inst.showPathMapping) {
+          <div class="path-map">
+            <p class="path-map-hint">
+              Only needed if Plex reports a file path that doesn't match Radarr's
+              root folders (e.g. Plex mounts <code>/mnt/user/data</code>, Radarr
+              mounts <code>/data</code> for the same share). Leave blank otherwise.
+            </p>
+            <div class="field">
+              <label>Plex path prefix</label>
+              <input type="text" [(ngModel)]="inst.pathMapFrom" placeholder="/mnt/user/data" />
+            </div>
+            <div class="field">
+              <label>Radarr path prefix</label>
+              <input type="text" [(ngModel)]="inst.pathMapTo" placeholder="/data" />
+            </div>
+          </div>
+        }
       </div>
     }
     <button class="btn-add" type="button" (click)="addRadarr()">+ Add Radarr instance</button>

@@ -11,6 +11,9 @@ interface InstanceFormState {
   apiKey: string;
   rootFolders: string[];
   enabled: boolean;
+  pathMapFrom: string;
+  pathMapTo: string;
+  showPathMapping: boolean;
   testStatus: 'idle' | 'testing' | 'ok' | 'error';
   testMessage: string;
 }
@@ -24,6 +27,9 @@ const newInstance = (
   apiKey: '',
   rootFolders: [],
   enabled: true,
+  pathMapFrom: '',
+  pathMapTo: '',
+  showPathMapping: false,
   testStatus: 'idle',
   testMessage: '',
   ...defaults,
@@ -100,6 +106,9 @@ export class ConfigComponent implements OnInit {
           apiKey: s.apiKey,
           rootFolders: s.rootFolders ?? [],
           enabled: s.enabled,
+          pathMapFrom: s.pathMapFrom ?? '',
+          pathMapTo: s.pathMapTo ?? '',
+          showPathMapping: !!(s.pathMapFrom || s.pathMapTo),
         })
       )
     );
@@ -112,6 +121,9 @@ export class ConfigComponent implements OnInit {
           apiKey: r.apiKey,
           rootFolders: r.rootFolders ?? [],
           enabled: r.enabled,
+          pathMapFrom: r.pathMapFrom ?? '',
+          pathMapTo: r.pathMapTo ?? '',
+          showPathMapping: !!(r.pathMapFrom || r.pathMapTo),
         })
       )
     );
@@ -222,7 +234,16 @@ export class ConfigComponent implements OnInit {
       apiKey: i.apiKey.trim(),
       rootFolders: i.rootFolders,
       enabled: i.enabled,
+      pathMapFrom: i.pathMapFrom.trim() || undefined,
+      pathMapTo: i.pathMapTo.trim() || undefined,
     };
+  }
+
+  togglePathMapping(type: 'sonarr' | 'radarr', id: string): void {
+    const list = type === 'sonarr' ? this.sonarrInstances : this.radarrInstances;
+    const instance = list().find((i) => i.id === id);
+    if (!instance) return;
+    this.updateInstance(type, id, { showPathMapping: !instance.showPathMapping });
   }
 
   async onSave(): Promise<void> {

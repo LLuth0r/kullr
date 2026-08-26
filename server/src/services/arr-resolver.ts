@@ -84,12 +84,25 @@ async function getIndex(cfg: AppConfig): Promise<InstanceIndex[]> {
 }
 
 /**
+ * Translate a Plex-reported file path into what a given *arr instance would
+ * see, using its optional pathMapFrom/pathMapTo override. A no-op unless
+ * both are set and the path actually starts with pathMapFrom.
+ */
+function applyPathMapping(filePath: string, instance: ArrInstance): string {
+  const from = instance.pathMapFrom ? normalizePath(instance.pathMapFrom) : '';
+  const to = instance.pathMapTo ? normalizePath(instance.pathMapTo) : '';
+  if (!from || !to || !filePath.startsWith(from)) return filePath;
+  return to + filePath.slice(from.length);
+}
+
+/**
  * Resolve a Plex item to its owning *arr instance.
  *
  * Strategy:
  *  1. Filter instances by media type (Sonarr=show, Radarr=movie).
- *  2. Find the instance whose root folder is a prefix of the file path.
- *  3. Within that instance, find the series/movie whose path is a prefix.
+ *  2. Translate the Plex file path per-instance (pathMapFrom/pathMapTo).
+ *  3. Find the instance whose root folder is a prefix of that path.
+ *  4. Within that instance, find the series/movie whose path is a prefix.
  *
  * Returns a result describing what we found (or why we couldn't match).
  */
@@ -121,15 +134,19 @@ export async function resolveItems(
       };
     }
 
-    // Pick the instance whose root folder is the longest prefix of filePath.
+    // Pick the instance whose root folder is the longest prefix of the
+    // (possibly path-mapped) file path.
     let bestInstance: InstanceIndex | null = null;
     let bestRootLen = -1;
+    let bestEffectivePath = filePath;
     for (const idx of candidates) {
+      const effectivePath = applyPathMapping(filePath, idx.instance);
       for (const root of idx.instance.rootFolders) {
         const r = normalizePath(root);
-        if (r && filePath.startsWith(r) && r.length > bestRootLen) {
+        if (r && effectivePath.startsWith(r) && r.length > bestRootLen) {
           bestRootLen = r.length;
           bestInstance = idx;
+          bestEffectivePath = effectivePath;
         }
       }
     }
@@ -146,7 +163,7 @@ export async function resolveItems(
     let bestItem: { id: number; path: string } | null = null;
     let bestItemLen = -1;
     for (const [arrPath, info] of bestInstance.byPath) {
-      if (filePath.startsWith(arrPath) && arrPath.length > bestItemLen) {
+      if (bestEffectivePath.startsWith(arrPath) && arrPath.length > bestItemLen) {
         bestItemLen = arrPath.length;
         bestItem = info;
       }
@@ -159,7 +176,7 @@ export async function resolveItems(
         instanceId: bestInstance.instance.id,
         instanceName: bestInstance.instance.name,
         arrType: bestInstance.arrType,
-        reason: `${bestInstance.instance.name} has no entry covering "${filePath}"`,
+        reason: `${bestInstance.instance.name} has no entry covering "${bestEffectivePath}"`,
       };
     }
 

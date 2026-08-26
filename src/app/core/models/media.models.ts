@@ -16,6 +16,14 @@ export interface ArrInstance {
   apiKey: string;
   rootFolders: string[];
   enabled: boolean;
+  /**
+   * Optional path translation applied to a Plex-reported file path before
+   * matching it against this instance's root folders — for setups where
+   * Plex and this *arr instance see the same share at different container
+   * paths (e.g. Plex at /mnt/user/data, Sonarr/Radarr at /data).
+   */
+  pathMapFrom?: string;
+  pathMapTo?: string;
 }
 
 export interface AppConfig {

@@ -29,6 +29,15 @@ export const ArrInstanceSchema = z.object({
   /** Cached on save by hitting /api/v3/rootFolder */
   rootFolders: z.array(z.string()).default([]),
   enabled: z.boolean().default(true),
+  /**
+   * Optional path translation applied to a Plex-reported file path before
+   * matching it against this instance's root folders — for setups where
+   * Plex and this *arr instance see the same share mounted at different
+   * container paths (e.g. Plex at /mnt/user/data, Sonarr/Radarr at /data).
+   * Both empty/omitted means "paths already match, no translation."
+   */
+  pathMapFrom: z.string().trim().optional(),
+  pathMapTo: z.string().trim().optional(),
 });
 
 export const AppConfigSchema = z.object({
