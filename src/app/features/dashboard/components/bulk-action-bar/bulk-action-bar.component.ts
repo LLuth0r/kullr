@@ -82,10 +82,10 @@ import { FileSizePipe } from '../../../../shared/pipes/file-size.pipe';
       color: var(--text-secondary);
     }
 
-    .btn-clear:hover { background: rgba(255, 255, 255, 0.05); }
+    .btn-clear:hover { background: var(--surface-5); }
 
     .btn-delete {
-      background: linear-gradient(135deg, #e54545, #b53535);
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
       color: #fff;
     }
 

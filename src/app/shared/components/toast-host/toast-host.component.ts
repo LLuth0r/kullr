@@ -52,8 +52,8 @@ import { ToastService } from '../../../core/services';
         &:hover { color: var(--text-primary); }
       }
 
-      &.success { border-left-color: var(--green-bright, #4ade80); }
-      &.error { border-left-color: var(--red, #e54545); }
+      &.success { border-left-color: var(--green-bright); }
+      &.error { border-left-color: var(--red); }
     }
 
     @keyframes slideIn {

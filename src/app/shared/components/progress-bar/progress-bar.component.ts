@@ -12,7 +12,7 @@ import { Component, input } from '@angular/core';
     .track {
       width: 64px;
       height: 3px;
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--surface-6);
       border-radius: 2px;
       overflow: hidden;
     }

@@ -33,7 +33,7 @@ import { FileSizePipe } from '../../../../shared/pipes/file-size.pipe';
       </div>
 
       @if (state.stats().discrepancyCount > 0) {
-        <div class="stat-card" style="--card-accent: #a855f7">
+        <div class="stat-card" style="--card-accent: var(--purple)">
           <div class="stat-label">Discrepancies</div>
           <div class="stat-value">{{ state.stats().discrepancyCount }}</div>
           <div class="stat-sub">Plex ↔ Tautulli mismatch</div>

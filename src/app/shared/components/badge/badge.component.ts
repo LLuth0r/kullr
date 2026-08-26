@@ -9,7 +9,7 @@ import { StalenessInfo } from '../../../core/models';
       class="badge"
       [style.color]="info().color"
       [style.background]="info().bg"
-      [style.border-color]="info().color + '22'"
+      [style.border-color]="'color-mix(in srgb, ' + info().color + ' 25%, transparent)'"
     >
       {{ info().label }}
     </span>
