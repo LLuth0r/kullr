@@ -246,6 +246,15 @@ export class MediaStateService {
                 arrItemPath: r.arrItemPath,
                 reason: r.reason,
               };
+            } else {
+              // Never sent to the resolver at all — say why, instead of
+              // leaving `arr` undefined and falling back to a generic message.
+              m.arr = {
+                matched: false,
+                reason: !m.plex
+                  ? 'No matching Plex item found for this Tautulli entry'
+                  : 'Plex did not report a file path for this item',
+              };
             }
           }
         } catch (e: any) {
