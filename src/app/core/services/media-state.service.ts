@@ -146,6 +146,10 @@ export class MediaStateService {
     return !!this.configSvc.config().plex;
   }
 
+  private titleYearKey(title: string | undefined, year: string | undefined): string {
+    return `${(title ?? '').trim().toLowerCase()}|${year ?? ''}`;
+  }
+
   // ── Actions ──────────────────────────────────────
 
   updateFilters(partial: Partial<MediaFilters>): void {
@@ -208,10 +212,24 @@ export class MediaStateService {
         }
         plexLibraryCounts.set(lib.section_id, plexWatchMap.size);
 
+        // Fallback index for when a rating_key has drifted (e.g. Tautulli's
+        // cached copy is stale relative to a Plex metadata refresh/rematch) —
+        // title+year is far less precise than an ID, but only used when the
+        // exact rating_key lookup below already missed.
+        const plexByTitleYear = new Map<string, PlexWatchState>();
+        for (const state of plexWatchMap.values()) {
+          if (state.title) {
+            plexByTitleYear.set(this.titleYearKey(state.title, state.year), state);
+          }
+        }
+
         // Phase 3: Merge and detect discrepancies
         this.loadingMsg.set(`Analyzing ${lib.section_name}…`);
         for (const item of tautulliItems) {
-          const plexState = plexWatchMap.get(item.rating_key) || null;
+          const plexState =
+            plexWatchMap.get(item.rating_key) ??
+            plexByTitleYear.get(this.titleYearKey(item.title, item.year)) ??
+            null;
           const discrepancy = this.detectDiscrepancy(item, plexState);
 
           allMedia.push({

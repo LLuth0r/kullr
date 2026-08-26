@@ -75,6 +75,9 @@ export interface PlexWatchState {
   watchedBy: UserWatchInfo[];
   /** Filesystem path Plex sees for this item (used by *arr resolver). */
   filePath?: string;
+  /** Used as a fallback correlation key when rating_key drifts between Tautulli's cache and Plex's live state. */
+  title?: string;
+  year?: string;
 }
 
 /** Describes the mismatch between Tautulli and Plex */

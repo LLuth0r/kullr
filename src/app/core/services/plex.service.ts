@@ -188,6 +188,8 @@ export class PlexService {
         totalEpisodes,
         watchedBy: userWatched ? [userInfo] : [],
         filePath,
+        title: item.title as string | undefined,
+        year: item.year != null ? String(item.year) : undefined,
       });
     }
 
