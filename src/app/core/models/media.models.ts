@@ -78,6 +78,10 @@ export interface PlexWatchState {
   /** Used as a fallback correlation key when rating_key drifts between Tautulli's cache and Plex's live state. */
   title?: string;
   year?: string;
+  /** External IDs (from Plex's Guid array) — used to match against Sonarr/Radarr independent of file paths. */
+  imdbId?: string;
+  tmdbId?: string;
+  tvdbId?: string;
 }
 
 /** Describes the mismatch between Tautulli and Plex */

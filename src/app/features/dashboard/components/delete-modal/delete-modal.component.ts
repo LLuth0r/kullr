@@ -147,9 +147,12 @@ export class DeleteModalComponent {
         .filter((i) => i.arr?.matched)
         .map((i) => ({
           ratingKey: i.rating_key,
-          filePath: i.plex?.filePath ?? '',
+          filePath: i.plex?.filePath,
           mediaType: i.media_type,
           title: i.title,
+          imdbId: i.plex?.imdbId,
+          tmdbId: i.plex?.tmdbId,
+          tvdbId: i.plex?.tvdbId,
         }));
       const results = await this.configSvc.deleteItems(payload, {
         deleteFiles: this.deleteFiles,

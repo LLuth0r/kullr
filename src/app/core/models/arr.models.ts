@@ -21,9 +21,13 @@ export interface DeleteResult {
 
 export interface DeleteRequestItem {
   ratingKey: string;
-  filePath: string;
+  filePath?: string;
   mediaType: 'movie' | 'show';
   title?: string;
+  /** External IDs from Plex's Guid array — a more robust match than paths. */
+  imdbId?: string;
+  tmdbId?: string;
+  tvdbId?: string;
 }
 
 export interface DeleteOptions {

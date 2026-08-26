@@ -247,11 +247,14 @@ export class MediaStateService {
         this.loadingMsg.set('Matching Sonarr / Radarr…');
         try {
           const requestItems = allMedia
-            .filter((m) => m.plex?.filePath)
+            .filter((m) => m.plex?.filePath || m.plex?.imdbId || m.plex?.tmdbId || m.plex?.tvdbId)
             .map((m) => ({
               ratingKey: m.rating_key,
-              filePath: m.plex!.filePath!,
+              filePath: m.plex?.filePath,
               mediaType: m.media_type,
+              imdbId: m.plex?.imdbId,
+              tmdbId: m.plex?.tmdbId,
+              tvdbId: m.plex?.tvdbId,
             }));
           const results = await this.configSvc.resolveItems(requestItems);
           const byKey = new Map(results.map((r) => [r.ratingKey, r]));
@@ -276,7 +279,7 @@ export class MediaStateService {
                 reason: !m.plex
                   ? `No matching Plex item found for this Tautulli entry ` +
                     `(rating_key ${m.rating_key}; Plex reported ${plexCount} item${plexCount === 1 ? '' : 's'} in "${m.library_name}")`
-                  : 'Plex did not report a file path for this item',
+                  : 'Plex did not report a file path or an external ID (IMDb/TMDb/TVDB) for this item',
               };
             }
           }

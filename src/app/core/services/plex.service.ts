@@ -3,6 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { PlexWatchState, PlexUser, UserWatchInfo } from '../models';
 
+/** Extracts imdb/tmdb/tvdb IDs from a Plex Guid array, e.g. [{id: 'imdb://tt1234567'}]. */
+function parseGuids(
+  guidArray: Array<{ id?: string }> | undefined
+): { imdbId?: string; tmdbId?: string; tvdbId?: string } {
+  const out: { imdbId?: string; tmdbId?: string; tvdbId?: string } = {};
+  for (const g of guidArray ?? []) {
+    const m = /^(imdb|tmdb|tvdb):\/\/(.+)$/.exec(g?.id ?? '');
+    if (!m) continue;
+    if (m[1] === 'imdb') out.imdbId = m[2];
+    else if (m[1] === 'tmdb') out.tmdbId = m[2];
+    else if (m[1] === 'tvdb') out.tvdbId = m[2];
+  }
+  return out;
+}
+
 /**
  * Calls the backend proxy at /api/plex/* — the server stamps in the X-Plex-Token
  * from saved config. The path /api/plex/tv/api/v2/... routes to plex.tv.
@@ -136,8 +151,11 @@ export class PlexService {
     // Explicit container params — some Plex Media Server versions cap /all at
     // a default page size (commonly 50) unless a size is requested, silently
     // dropping everything past that cutoff from the library-wide aggregation.
+    // includeGuids=1 adds each item's external IDs (imdb/tmdb/tvdb) to this
+    // same bulk response — used as a robust *arr-matching key that doesn't
+    // depend on Plex and Sonarr/Radarr agreeing on filesystem paths.
     const data = await this.plexGet<any>(
-      `/library/sections/${sectionId}/all?X-Plex-Container-Start=0&X-Plex-Container-Size=100000`
+      `/library/sections/${sectionId}/all?X-Plex-Container-Start=0&X-Plex-Container-Size=100000&includeGuids=1`
     );
     const items = data?.MediaContainer?.Metadata || [];
     const adminUser = this.users().find((u) => u.isAdmin) ?? {
@@ -179,6 +197,8 @@ export class PlexService {
         ? (item?.Location?.[0]?.path as string | undefined)
         : (item?.Media?.[0]?.Part?.[0]?.file as string | undefined);
 
+      const guids = parseGuids(item?.Guid);
+
       aggregated.set(rk, {
         watched: userWatched,
         viewCount: isShow ? watchedEpisodes || 0 : viewCount,
@@ -190,6 +210,7 @@ export class PlexService {
         filePath,
         title: item.title as string | undefined,
         year: item.year != null ? String(item.year) : undefined,
+        ...guids,
       });
     }
 
