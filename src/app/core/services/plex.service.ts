@@ -56,26 +56,40 @@ export class PlexService {
     }
 
     // 2. Friends/shared
+    // NOTE: plex.tv/api/v2/friends was deprecated (returns 410 Gone). The
+    // legacy plex.tv/api/users/ endpoint is what current Plex clients use
+    // instead — it's XML-native so the JSON shape is MediaContainer.User
+    // rather than a bare array.
     try {
-      const friendsData = await this.plexGet<any>('/tv/api/v2/friends');
-      if (Array.isArray(friendsData)) {
-        for (const friend of friendsData) {
-          const hasAccess =
-            friend.servers?.some(
-              (s: any) => s.machineIdentifier === this.machineId()
-            ) ?? true;
+      const friendsData = await this.plexGet<any>('/api/users/');
+      const friendsList: any[] = Array.isArray(friendsData)
+        ? friendsData
+        : Array.isArray(friendsData?.MediaContainer?.User)
+          ? friendsData.MediaContainer.User
+          : friendsData?.MediaContainer?.User
+            ? [friendsData.MediaContainer.User]
+            : [];
 
-          if (hasAccess || !friend.servers) {
-            allUsers.push({
-              id: String(friend.id),
-              title: friend.title || friend.username || `User ${friend.id}`,
-              username: friend.username || '',
-              email: friend.email,
-              thumb: friend.thumb,
-              isHome: false,
-              isAdmin: false,
-            });
-          }
+      for (const friend of friendsList) {
+        const hasAccess =
+          friend.Server?.some?.(
+            (s: any) => s.machineIdentifier === this.machineId()
+          ) ??
+          friend.servers?.some?.(
+            (s: any) => s.machineIdentifier === this.machineId()
+          ) ??
+          true;
+
+        if (hasAccess || (!friend.Server && !friend.servers)) {
+          allUsers.push({
+            id: String(friend.id),
+            title: friend.title || friend.username || friend.friendlyName || `User ${friend.id}`,
+            username: friend.username || '',
+            email: friend.email,
+            thumb: friend.thumb,
+            isHome: friend.home === '1' || friend.home === 1 || friend.home === true,
+            isAdmin: false,
+          });
         }
       }
     } catch (e) {
