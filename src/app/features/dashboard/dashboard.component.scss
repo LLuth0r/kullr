@@ -1,7 +1,7 @@
 .dashboard {
   min-height: 100vh;
   background:
-    radial-gradient(ellipse at 15% 5%, rgba(207, 122, 48, 0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 15% 5%, var(--accent-glow-1) 0%, transparent 40%),
     var(--bg-root);
 }
 
@@ -13,6 +13,18 @@
   gap: 16px;
   padding: 28px 32px 22px;
   border-bottom: 1px solid var(--border);
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-mark {
+    display: block;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
 
   .eyebrow {
     font-size: 9px;
@@ -41,6 +53,7 @@
 
 .header-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -79,7 +92,7 @@
   display: inline-block;
   width: 28px;
   height: 28px;
-  border: 3px solid rgba(207, 122, 48, 0.15);
+  border: 3px solid var(--accent-glow);
   border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
@@ -100,8 +113,8 @@
 .error-box {
   margin: 20px 32px;
   padding: 16px;
-  background: rgba(229, 69, 69, 0.08);
-  border: 1px solid rgba(229, 69, 69, 0.2);
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
   border-radius: 8px;
   color: var(--red);
   font-size: 13px;

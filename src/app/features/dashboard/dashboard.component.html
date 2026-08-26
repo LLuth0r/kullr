@@ -1,16 +1,20 @@
 <div class="dashboard">
   <div class="header">
-    <div>
-      <div class="eyebrow">Plex Media</div>
-      <h1>Kullr</h1>
-      @if (plex.users().length > 0) {
-        <div class="user-count">
-          Tracking {{ plex.users().length }} user{{ plex.users().length !== 1 ? 's' : '' }}:
-          {{ plex.users().map(u => u.title).join(', ') }}
-        </div>
-      }
+    <div class="brand">
+      <img class="brand-mark" src="icon.svg" width="32" height="32" alt="" />
+      <div>
+        <div class="eyebrow">Plex Media</div>
+        <h1>Kullr</h1>
+        @if (plex.users().length > 0) {
+          <div class="user-count">
+            Tracking {{ plex.users().length }} user{{ plex.users().length !== 1 ? 's' : '' }}:
+            {{ plex.users().map(u => u.title).join(', ') }}
+          </div>
+        }
+      </div>
     </div>
     <div class="header-actions">
+      <app-theme-toggle />
       <button class="btn-sm" (click)="rescan()" [disabled]="state.loading()">
         {{ state.loading() ? 'Scanning…' : '↻ Rescan' }}
       </button>

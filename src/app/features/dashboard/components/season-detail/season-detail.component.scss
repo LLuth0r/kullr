@@ -1,5 +1,5 @@
 .season-block {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--nested-bg);
   border-top: 1px solid var(--border-subtle);
 }
 
@@ -44,10 +44,10 @@
   align-items: center;
   padding: 7px 0;
   margin: 0 20px 0 48px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.015);
+  border-bottom: 1px solid var(--border-subtle);
 
   &.ep-discrepancy {
-    border-left: 2px solid #a855f7;
+    border-left: 2px solid var(--purple);
     padding-left: 8px;
     margin-left: 40px;
   }
@@ -61,7 +61,7 @@
 
 .ep-title {
   font-size: 12px;
-  color: #bbb;
+  color: var(--text-tertiary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -111,8 +111,8 @@
   margin: 0 20px 0 50px;
   padding: 4px 10px;
   font-size: 10px;
-  color: #a855f7;
-  background: rgba(168, 85, 247, 0.04);
-  border-bottom: 1px solid rgba(168, 85, 247, 0.08);
-  border-left: 2px solid #a855f7;
+  color: var(--purple);
+  background: var(--purple-bg-soft);
+  border-bottom: 1px solid var(--purple-border);
+  border-left: 2px solid var(--purple);
 }

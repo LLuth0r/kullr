@@ -4,12 +4,12 @@
   flex-wrap: wrap;
   align-items: center;
   padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.008);
+  background: var(--surface-1);
   border-bottom: 1px solid var(--border);
 
   input,
   select {
-    background: rgba(255, 255, 255, 0.035);
+    background: var(--bg-hover);
     border: 1px solid var(--border);
     border-radius: 7px;
     padding: 9px 12px;
@@ -20,7 +20,7 @@
     transition: border-color 0.2s;
 
     &:focus {
-      border-color: rgba(207, 122, 48, 0.35);
+      border-color: var(--accent-border);
     }
   }
 
@@ -34,6 +34,6 @@
   }
 
   select option {
-    background: #1a1a24;
+    background: var(--elevated-bg);
   }
 }

@@ -5,12 +5,13 @@
   justify-content: center;
   padding: 24px;
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(207, 122, 48, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(40, 40, 80, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 20%, var(--accent-glow-2) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, var(--accent-glow-cool) 0%, transparent 50%),
     var(--bg-root);
 }
 
 .config-card {
+  position: relative;
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -21,6 +22,24 @@
   animation: fadeUp 0.5s ease-out;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
+}
+
+.corner-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  display: block;
+  border-radius: 9px;
+  flex-shrink: 0;
 }
 
 @keyframes fadeUp {
@@ -73,7 +92,7 @@ h1 {
   input {
     display: block;
     width: 100%;
-    background: rgba(255, 255, 255, 0.035);
+    background: var(--bg-hover);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 13px 16px;
@@ -85,7 +104,7 @@ h1 {
     box-sizing: border-box;
 
     &:focus {
-      border-color: rgba(207, 122, 48, 0.4);
+      border-color: var(--accent-border-strong);
     }
 
     &::placeholder {
@@ -97,8 +116,8 @@ h1 {
 .error-box {
   margin-top: 20px;
   padding: 12px 16px;
-  background: rgba(229, 69, 69, 0.07);
-  border: 1px solid rgba(229, 69, 69, 0.18);
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
   border-radius: 8px;
   color: var(--red);
   font-size: 11px;
@@ -109,7 +128,7 @@ h1 {
   margin-top: 28px;
   width: 100%;
   padding: 15px 20px;
-  background: linear-gradient(135deg, var(--accent), #b5652a);
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
   border: none;
   border-radius: 12px;
   color: #fff;
@@ -188,7 +207,7 @@ h1 {
 .btn-test {
   margin-top: 14px;
   padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-4);
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text-secondary);
@@ -198,7 +217,7 @@ h1 {
   transition: background 0.2s;
 
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.07);
+    background: var(--surface-6);
   }
 
   &:disabled {
@@ -234,7 +253,7 @@ h1 {
 .instance-card {
   margin-top: 16px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: 12px;
 

@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfigService } from '../../core/services';
 import { AppConfig, ArrInstance } from '../../core/models';
+import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 
 interface InstanceFormState {
   id: string;
@@ -39,7 +40,7 @@ function cryptoRandomId(): string {
 @Component({
   selector: 'app-config',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ThemeToggleComponent],
   templateUrl: './config.component.html',
   styleUrl: './config.component.scss',
 })

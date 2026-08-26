@@ -11,6 +11,7 @@ import { MediaTableComponent } from './components/media-table/media-table.compon
 import { BulkActionBarComponent } from './components/bulk-action-bar/bulk-action-bar.component';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { ToastHostComponent } from '../../shared/components/toast-host/toast-host.component';
+import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,6 +23,7 @@ import { ToastHostComponent } from '../../shared/components/toast-host/toast-hos
     BulkActionBarComponent,
     DeleteModalComponent,
     ToastHostComponent,
+    ThemeToggleComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

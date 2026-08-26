@@ -22,11 +22,11 @@
   }
 
   &.has-discrepancy {
-    border-left: 2px solid #a855f7;
+    border-left: 2px solid var(--purple);
   }
 
   &.is-selected {
-    background: rgba(207, 122, 48, 0.08);
+    background: var(--accent-bg-soft);
   }
 }
 
@@ -57,7 +57,7 @@
     color: var(--text-muted);
     transition: color 0.15s, background 0.15s;
 
-    &:hover { color: var(--red, #e54545); background: rgba(229, 69, 69, 0.08); }
+    &:hover { color: var(--red); background: var(--red-bg); }
   }
 
   .row-blocked {
@@ -71,7 +71,7 @@
   font-size: 9px;
   font-weight: 600;
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-4);
   border: 1px solid var(--border-subtle);
   padding: 1px 6px;
   border-radius: 3px;
@@ -168,7 +168,7 @@
 .live-indicator {
   font-size: 9px;
   color: var(--green-bright);
-  background: rgba(52, 199, 106, 0.1);
+  background: var(--green-bright-bg);
   padding: 2px 7px;
   border-radius: 4px;
   font-weight: 600;
@@ -186,19 +186,19 @@
   align-items: center;
   gap: 10px;
   padding: 6px 20px 6px 22px;
-  background: rgba(168, 85, 247, 0.05);
-  border-bottom: 1px solid rgba(168, 85, 247, 0.1);
-  border-left: 2px solid #a855f7;
+  background: var(--purple-bg-soft);
+  border-bottom: 1px solid var(--purple-border);
+  border-left: 2px solid var(--purple);
   font-size: 11px;
 }
 
 .discrepancy-type {
   font-weight: 700;
-  color: #a855f7;
+  color: var(--purple);
   font-size: 9px;
   letter-spacing: 0.8px;
   padding: 2px 6px;
-  background: rgba(168, 85, 247, 0.1);
+  background: var(--purple-bg-strong);
   border-radius: 3px;
   white-space: nowrap;
 }
@@ -214,7 +214,7 @@
   align-items: center;
   gap: 6px;
   padding: 5px 20px 5px 22px;
-  background: rgba(108, 201, 138, 0.03);
+  background: var(--green-bg-soft);
   border-bottom: 1px solid var(--border-subtle);
   flex-wrap: wrap;
 }
@@ -229,8 +229,8 @@
   font-size: 10px;
   font-weight: 600;
   color: var(--green-soft);
-  background: rgba(108, 201, 138, 0.08);
+  background: var(--green-bg-strong);
   padding: 1px 7px;
   border-radius: 3px;
-  border: 1px solid rgba(108, 201, 138, 0.15);
+  border: 1px solid var(--green-border);
 }

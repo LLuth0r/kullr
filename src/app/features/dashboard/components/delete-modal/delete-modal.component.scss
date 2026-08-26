@@ -1,7 +1,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--scrim);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -76,9 +76,9 @@ header {
   .warn {
     margin-top: 10px;
     padding: 8px 12px;
-    background: rgba(229, 152, 69, 0.08);
+    background: var(--skip-bg);
     border-radius: 6px;
-    color: #e89c4a;
+    color: var(--skip);
     font-size: 11px;
   }
 }
@@ -96,7 +96,7 @@ header {
     justify-content: space-between;
     gap: 12px;
     padding: 6px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--surface-4);
     font-size: 12px;
 
     &:last-child { border-bottom: none; }
@@ -115,7 +115,7 @@ header {
       white-space: nowrap;
     }
 
-    .t-skip { color: #e89c4a; }
+    .t-skip { color: var(--skip); }
 
     &.skipped .t-title { color: var(--text-muted); }
   }
@@ -152,8 +152,8 @@ header {
 .error-box {
   margin: 0 24px 12px;
   padding: 10px 12px;
-  background: rgba(229, 69, 69, 0.08);
-  border: 1px solid rgba(229, 69, 69, 0.18);
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
   border-radius: 6px;
   color: var(--red);
   font-size: 11px;
@@ -183,11 +183,11 @@ header {
     color: var(--text-secondary);
     border-color: var(--border);
 
-    &:hover:not(:disabled) { background: rgba(255, 255, 255, 0.05); }
+    &:hover:not(:disabled) { background: var(--surface-5); }
   }
 
   .btn-danger {
-    background: linear-gradient(135deg, #e54545, #b53535);
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
     color: #fff;
 
     &:hover:not(:disabled) { opacity: 0.92; }

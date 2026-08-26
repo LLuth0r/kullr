@@ -1,6 +1,59 @@
 /* Fonts loaded via <link> in index.html to avoid build-time inlining issues */
 
+@mixin light-palette {
+  --bg-root: #f2f3f4;
+  --bg-panel: rgba(20, 22, 26, 0.035);
+  --bg-hover: rgba(20, 22, 26, 0.055);
+  --bg-expanded: rgba(181, 101, 42, 0.06);
+  --border: rgba(20, 22, 26, 0.13);
+  --border-subtle: rgba(20, 22, 26, 0.08);
+  --accent: #b5652a;
+  --accent-dark: #8a4d1f;
+  --accent-glow: rgba(181, 101, 42, 0.16);
+  --text-primary: #1a1c1f;
+  --text-secondary: #565b60;
+  --text-tertiary: #4a4f54;
+  --text-dim: #83898e;
+  --text-muted: #a8adb2;
+  --red: #c73a3a;
+  --red-dark: #8f2a2a;
+  --orange: #b5741f;
+  --yellow: #8c7010;
+  --green-soft: #2f9c5c;
+  --green-bright: #1f9c52;
+  --purple: #7c3aed;
+  --skip: #96601a;
+
+  --surface-1: rgba(20, 22, 26, 0.025);
+  --surface-4: rgba(20, 22, 26, 0.06);
+  --surface-5: rgba(20, 22, 26, 0.07);
+  --surface-6: rgba(20, 22, 26, 0.09);
+  --surface-7: rgba(20, 22, 26, 0.11);
+  --nested-bg: rgba(20, 22, 26, 0.04);
+  --scrim: rgba(10, 10, 14, 0.55);
+  --elevated-bg: #ffffff;
+
+  --accent-glow-1: rgba(181, 101, 42, 0.05);
+  --accent-glow-2: rgba(181, 101, 42, 0.07);
+  --accent-glow-cool: rgba(140, 150, 210, 0.14);
+  --accent-border: rgba(181, 101, 42, 0.4);
+  --accent-border-strong: rgba(181, 101, 42, 0.45);
+  --accent-bg-soft: rgba(181, 101, 42, 0.1);
+
+  --red-bg: rgba(199, 58, 58, 0.08);
+  --red-border: rgba(199, 58, 58, 0.22);
+  --purple-bg-soft: rgba(124, 58, 237, 0.06);
+  --purple-bg-strong: rgba(124, 58, 237, 0.12);
+  --purple-border: rgba(124, 58, 237, 0.16);
+  --green-bg-soft: rgba(47, 156, 92, 0.06);
+  --green-bg-strong: rgba(47, 156, 92, 0.1);
+  --green-border: rgba(47, 156, 92, 0.22);
+  --green-bright-bg: rgba(31, 156, 82, 0.12);
+  --skip-bg: rgba(150, 96, 26, 0.1);
+}
+
 :root {
+  // ── Dark theme (default) ──
   --bg-root: #07080c;
   --bg-panel: rgba(255, 255, 255, 0.02);
   --bg-hover: rgba(255, 255, 255, 0.035);
@@ -8,18 +61,67 @@
   --border: rgba(255, 255, 255, 0.055);
   --border-subtle: rgba(255, 255, 255, 0.03);
   --accent: #cf7a30;
+  --accent-dark: #b5652a;
   --accent-glow: rgba(207, 122, 48, 0.15);
   --text-primary: #e8e8e8;
   --text-secondary: #999;
+  --text-tertiary: #bbb;
   --text-dim: #5a5a5a;
   --text-muted: #444;
   --red: #e54545;
+  --red-dark: #b53535;
   --orange: #e8943a;
   --yellow: #d4b844;
   --green-soft: #6cc98a;
   --green-bright: #34c76a;
+  --purple: #a855f7;
+  --skip: #e89c4a;
+
+  // Surface tints — subtle overlays layered on top of --bg-root.
+  // Dark theme lightens (white-alpha); light theme darkens (ink-alpha).
+  --surface-1: rgba(255, 255, 255, 0.008);
+  --surface-4: rgba(255, 255, 255, 0.04);
+  --surface-5: rgba(255, 255, 255, 0.05);
+  --surface-6: rgba(255, 255, 255, 0.07);
+  --surface-7: rgba(255, 255, 255, 0.08);
+  --nested-bg: rgba(0, 0, 0, 0.2);
+  --scrim: rgba(0, 0, 0, 0.65);
+  --elevated-bg: #1a1a24;
+
+  // Accent-tinted glows / borders
+  --accent-glow-1: rgba(207, 122, 48, 0.04);
+  --accent-glow-2: rgba(207, 122, 48, 0.06);
+  --accent-glow-cool: rgba(40, 40, 80, 0.15);
+  --accent-border: rgba(207, 122, 48, 0.35);
+  --accent-border-strong: rgba(207, 122, 48, 0.4);
+  --accent-bg-soft: rgba(207, 122, 48, 0.08);
+
+  // Status tints
+  --red-bg: rgba(229, 69, 69, 0.08);
+  --red-border: rgba(229, 69, 69, 0.18);
+  --purple-bg-soft: rgba(168, 85, 247, 0.05);
+  --purple-bg-strong: rgba(168, 85, 247, 0.1);
+  --purple-border: rgba(168, 85, 247, 0.1);
+  --green-bg-soft: rgba(108, 201, 138, 0.03);
+  --green-bg-strong: rgba(108, 201, 138, 0.08);
+  --green-border: rgba(108, 201, 138, 0.15);
+  --green-bright-bg: rgba(52, 199, 106, 0.1);
+  --skip-bg: rgba(229, 152, 69, 0.08);
+
   --mono: 'IBM Plex Mono', 'Fira Code', monospace;
   --sans: 'Outfit', system-ui, sans-serif;
+}
+
+// Explicit user choice — wins regardless of OS preference.
+:root[data-theme='light'] {
+  @include light-palette;
+}
+
+// No explicit choice yet: follow the OS, unless the user explicitly chose dark.
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    @include light-palette;
+  }
 }
 
 *,
@@ -39,4 +141,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
+  }
 }
