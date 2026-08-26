@@ -4,6 +4,7 @@ import {
   FormatService,
   SelectionService,
   ConfigService,
+  ToastService,
 } from '../../../../core/services';
 import { BadgeComponent } from '../../../../shared/components/badge/badge.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
@@ -23,13 +24,13 @@ import { FileSizePipe } from '../../../../shared/pipes/file-size.pipe';
         [class.has-discrepancy]="hasDiscrepancy()"
         [class.is-selected]="isSelected()"
       >
-        <div class="select-cell" (click)="$event.stopPropagation()">
+        <div class="select-cell" (click)="onSelectCellClick($event)">
           <input
             type="checkbox"
             [checked]="isSelected()"
             [disabled]="!canSelect()"
             (change)="onToggleSelect()"
-            [title]="canSelect() ? 'Select for bulk action' : (item().arr?.reason || 'No *arr instance for this item')"
+            [title]="canSelect() ? 'Select for bulk action' : 'Click for why this item is blocked'"
           />
         </div>
 
@@ -91,7 +92,12 @@ import { FileSizePipe } from '../../../../shared/pipes/file-size.pipe';
               🗑
             </button>
           } @else if (arrConfigured()) {
-            <span class="row-blocked" [title]="item().arr?.reason || 'No matching *arr instance'">—</span>
+            <button
+              type="button"
+              class="row-blocked"
+              title="Click for why this item is blocked"
+              (click)="showBlockReason()"
+            >—</button>
           }
         </div>
       </div>
@@ -128,6 +134,7 @@ export class MediaRowComponent {
   protected readonly fmt = inject(FormatService);
   protected readonly selection = inject(SelectionService);
   private readonly configSvc = inject(ConfigService);
+  private readonly toast = inject(ToastService);
 
   readonly isShow = computed(() => this.item().media_type === 'show');
 
@@ -182,5 +189,14 @@ export class MediaRowComponent {
 
   onToggleSelect(): void {
     this.selection.toggle(this.item().rating_key);
+  }
+
+  onSelectCellClick(event: MouseEvent): void {
+    event.stopPropagation();
+    if (!this.canSelect()) this.showBlockReason();
+  }
+
+  showBlockReason(): void {
+    this.toast.info(this.item().arr?.reason || 'No *arr instance for this item');
   }
 }

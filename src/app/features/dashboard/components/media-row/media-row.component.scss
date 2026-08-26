@@ -61,8 +61,17 @@
   }
 
   .row-blocked {
+    background: transparent;
+    border: none;
+    padding: 4px 6px;
+    cursor: pointer;
     color: var(--text-muted);
     font-size: 12px;
+    font-family: inherit;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+
+    &:hover { color: var(--text-secondary); background: var(--surface-4); }
   }
 }
 
