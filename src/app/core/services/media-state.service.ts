@@ -174,6 +174,8 @@ export class MediaStateService {
       this.libraries.set(libs);
 
       const allMedia: MediaItem[] = [];
+      /** Diagnostic: how many Plex items were actually seen per library section. */
+      const plexLibraryCounts = new Map<string, number>();
 
       for (const lib of libs) {
         // Phase 1: Get Tautulli data
@@ -204,6 +206,7 @@ export class MediaStateService {
             console.warn(`Plex watch state failed for ${lib.section_name}:`, e);
           }
         }
+        plexLibraryCounts.set(lib.section_id, plexWatchMap.size);
 
         // Phase 3: Merge and detect discrepancies
         this.loadingMsg.set(`Analyzing ${lib.section_name}…`);
@@ -249,10 +252,12 @@ export class MediaStateService {
             } else {
               // Never sent to the resolver at all — say why, instead of
               // leaving `arr` undefined and falling back to a generic message.
+              const plexCount = plexLibraryCounts.get(m.library_id) ?? 0;
               m.arr = {
                 matched: false,
                 reason: !m.plex
-                  ? 'No matching Plex item found for this Tautulli entry'
+                  ? `No matching Plex item found for this Tautulli entry ` +
+                    `(rating_key ${m.rating_key}; Plex reported ${plexCount} item${plexCount === 1 ? '' : 's'} in "${m.library_name}")`
                   : 'Plex did not report a file path for this item',
               };
             }
