@@ -1,0 +1,11 @@
+node_modules
+server/node_modules
+server/dist
+dist
+.angular
+.vscode
+.git
+.gitignore
+*.log
+PLAN.md
+tsconfig.check.json

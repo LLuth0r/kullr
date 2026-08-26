@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>kullr</Name>
+  <Repository>kullr:latest</Repository>
+  <Registry/>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project/>
+  <Overview>
+    Cross-references Tautulli session history with Plex-native watch state to
+    surface what's safe to delete. Hooks into one or more Sonarr/Radarr
+    instances so you can act on findings directly from the dashboard.
+
+    On first launch, browse to http://[IP]:[PORT:8088] and enter your Plex
+    URL/token, Tautulli URL/key, and any Sonarr/Radarr instances. Settings are
+    saved to /config/config.json — you only enter them once.
+  </Overview>
+  <Category>MediaApp:Other Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8088]/</WebUI>
+  <TemplateURL/>
+  <Icon/>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Description>
+    Kullr — find watched/stale media and delete it via Sonarr/Radarr.
+    All credentials are stored once in /config and proxied server-side, so they
+    never leave your network.
+  </Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>8088</HostPort>
+        <ContainerPort>8080</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/appdata/kullr</HostDir>
+      <ContainerDir>/config</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Environment>
+    <Variable>
+      <Name>TZ</Name>
+      <Value>America/Los_Angeles</Value>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Name>PUID</Name>
+      <Value>99</Value>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Name>PGID</Name>
+      <Value>100</Value>
+      <Mode/>
+    </Variable>
+  </Environment>
+  <Config Name="WebUI Port" Target="8080" Default="8088" Mode="tcp" Description="Port the dashboard listens on" Type="Port" Display="always" Required="true" Mask="false">8088</Config>
+  <Config Name="Config Folder" Target="/config" Default="/mnt/user/appdata/kullr" Mode="rw" Description="Persistent config (API keys + URLs)" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/kullr</Config>
+  <Config Name="TZ" Target="TZ" Default="America/Los_Angeles" Mode="" Description="Timezone" Type="Variable" Display="always" Required="false" Mask="false">America/Los_Angeles</Config>
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID for the running process (Unraid default 99)" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID for the running process (Unraid default 100)" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+</Container>

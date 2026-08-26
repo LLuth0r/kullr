@@ -1,0 +1,46 @@
+<div class="dashboard">
+  <div class="header">
+    <div>
+      <div class="eyebrow">Plex Media</div>
+      <h1>Kullr</h1>
+      @if (plex.users().length > 0) {
+        <div class="user-count">
+          Tracking {{ plex.users().length }} user{{ plex.users().length !== 1 ? 's' : '' }}:
+          {{ plex.users().map(u => u.title).join(', ') }}
+        </div>
+      }
+    </div>
+    <div class="header-actions">
+      <button class="btn-sm" (click)="rescan()" [disabled]="state.loading()">
+        {{ state.loading() ? 'Scanning…' : '↻ Rescan' }}
+      </button>
+      <button class="btn-sm btn-ghost" (click)="disconnect()">Settings</button>
+    </div>
+  </div>
+
+  @if (state.loading()) {
+    <div class="loading-panel">
+      <div class="spinner"></div>
+      <div class="loading-msg">{{ state.loadingMsg() }}</div>
+    </div>
+  } @else if (state.error()) {
+    <div class="error-box">{{ state.error() }}</div>
+  } @else if (state.mediaItems().length === 0) {
+    <div class="empty-msg">No media loaded. Click Rescan to fetch your library data.</div>
+  } @else {
+    <app-stats-row />
+    <app-filter-bar />
+    <app-media-table (deleteRequested)="openDeleteFor($event)" />
+  }
+</div>
+
+<app-bulk-action-bar (deleteRequested)="openBulkDelete()" />
+
+@if (deleteTarget().length > 0) {
+  <app-delete-modal
+    [items]="deleteTarget()"
+    (closed)="onModalClosed($event)"
+  />
+}
+
+<app-toast-host />

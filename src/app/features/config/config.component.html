@@ -1,0 +1,224 @@
+<div class="config-overlay">
+  <div class="config-card">
+    <div class="eyebrow">Plex Media</div>
+    <h1>Kullr</h1>
+    <p class="subtitle">
+      Configure Plex, Tautulli, and (optionally) Sonarr / Radarr instances.
+      Settings are saved server-side — you only enter them once.
+    </p>
+
+    <!-- ── Plex ── -->
+    <div class="section-label">
+      <span class="section-icon">①</span> Plex Server
+      @if (plexTestStatus() === 'ok') {
+        <span class="check">✓ {{ plexServerName() }}</span>
+      } @else if (plexTestStatus() === 'error') {
+        <span class="check err">✗ {{ plexServerName() }}</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="cfg-plex-url">Plex URL</label>
+      <input
+        id="cfg-plex-url"
+        type="text"
+        [(ngModel)]="plexUrl"
+        placeholder="http://192.168.1.x:32400"
+      />
+    </div>
+
+    <div class="field">
+      <label for="cfg-plex-token">
+        Plex Token
+        @if (plexHasStored()) {
+          <span class="stored-hint">(stored — leave blank to keep)</span>
+        }
+      </label>
+      <input
+        id="cfg-plex-token"
+        type="password"
+        [(ngModel)]="plexToken"
+        placeholder="X-Plex-Token (see docs)"
+      />
+    </div>
+
+    <button
+      class="btn-test"
+      type="button"
+      [disabled]="!plexUrl || !plexToken || plexTestStatus() === 'testing'"
+      (click)="testPlex()"
+    >
+      {{ plexTestStatus() === 'testing' ? 'Testing…' : 'Test Plex connection' }}
+    </button>
+
+    <!-- ── Tautulli ── -->
+    <div class="section-label">
+      <span class="section-icon">②</span> Tautulli
+      @if (tautulliTestStatus() === 'ok') {
+        <span class="check">✓ Connected</span>
+      } @else if (tautulliTestStatus() === 'error') {
+        <span class="check err">✗ Failed</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="cfg-tau-url">Tautulli URL</label>
+      <input
+        id="cfg-tau-url"
+        type="text"
+        [(ngModel)]="tautulliUrl"
+        placeholder="http://192.168.1.x:8181"
+      />
+    </div>
+
+    <div class="field">
+      <label for="cfg-tau-key">
+        Tautulli API Key
+        @if (tautulliHasStored()) {
+          <span class="stored-hint">(stored — leave blank to keep)</span>
+        }
+      </label>
+      <input
+        id="cfg-tau-key"
+        type="password"
+        [(ngModel)]="tautulliKey"
+        placeholder="Settings → Web Interface → API key"
+      />
+    </div>
+
+    <button
+      class="btn-test"
+      type="button"
+      [disabled]="!tautulliUrl || !tautulliKey || tautulliTestStatus() === 'testing'"
+      (click)="testTautulli()"
+    >
+      {{ tautulliTestStatus() === 'testing' ? 'Testing…' : 'Test Tautulli connection' }}
+    </button>
+
+    <!-- ── Sonarr instances ── -->
+    <div class="section-label">
+      <span class="section-icon">③</span> Sonarr
+      <span class="section-sub">(optional · enables show deletion)</span>
+    </div>
+
+    @for (inst of sonarrInstances(); track inst.id) {
+      <div class="instance-card">
+        <div class="instance-head">
+          <input
+            class="instance-name"
+            type="text"
+            [(ngModel)]="inst.name"
+            placeholder="Instance label (e.g., Sonarr 4K)"
+          />
+          <button class="btn-icon" type="button" (click)="removeSonarr(inst.id)" title="Remove">×</button>
+        </div>
+        <div class="field">
+          <label>URL</label>
+          <input type="text" [(ngModel)]="inst.url" placeholder="http://sonarr:8989" />
+        </div>
+        <div class="field">
+          <label>
+            API Key
+            @if (inst.apiKey.startsWith('••••')) {
+              <span class="stored-hint">(stored — leave to keep)</span>
+            }
+          </label>
+          <input type="password" [(ngModel)]="inst.apiKey" placeholder="Sonarr → Settings → General" />
+        </div>
+        <div class="instance-foot">
+          <label class="cb">
+            <input type="checkbox" [(ngModel)]="inst.enabled" /> Enabled
+          </label>
+          <button
+            class="btn-test sm"
+            type="button"
+            [disabled]="!inst.url || !inst.apiKey || inst.testStatus === 'testing'"
+            (click)="testInstance('sonarr', inst.id)"
+          >
+            {{ inst.testStatus === 'testing' ? 'Testing…' : 'Test' }}
+          </button>
+          @if (inst.testStatus === 'ok') {
+            <span class="check sm">✓ {{ inst.testMessage }}</span>
+          } @else if (inst.testStatus === 'error') {
+            <span class="check sm err">✗ {{ inst.testMessage }}</span>
+          } @else if (inst.rootFolders.length) {
+            <span class="check sm muted">Root: {{ inst.rootFolders.join(', ') }}</span>
+          }
+        </div>
+      </div>
+    }
+    <button class="btn-add" type="button" (click)="addSonarr()">+ Add Sonarr instance</button>
+
+    <!-- ── Radarr instances ── -->
+    <div class="section-label">
+      <span class="section-icon">④</span> Radarr
+      <span class="section-sub">(optional · enables movie deletion)</span>
+    </div>
+
+    @for (inst of radarrInstances(); track inst.id) {
+      <div class="instance-card">
+        <div class="instance-head">
+          <input
+            class="instance-name"
+            type="text"
+            [(ngModel)]="inst.name"
+            placeholder="Instance label (e.g., Radarr 4K)"
+          />
+          <button class="btn-icon" type="button" (click)="removeRadarr(inst.id)" title="Remove">×</button>
+        </div>
+        <div class="field">
+          <label>URL</label>
+          <input type="text" [(ngModel)]="inst.url" placeholder="http://radarr:7878" />
+        </div>
+        <div class="field">
+          <label>
+            API Key
+            @if (inst.apiKey.startsWith('••••')) {
+              <span class="stored-hint">(stored — leave to keep)</span>
+            }
+          </label>
+          <input type="password" [(ngModel)]="inst.apiKey" placeholder="Radarr → Settings → General" />
+        </div>
+        <div class="instance-foot">
+          <label class="cb">
+            <input type="checkbox" [(ngModel)]="inst.enabled" /> Enabled
+          </label>
+          <button
+            class="btn-test sm"
+            type="button"
+            [disabled]="!inst.url || !inst.apiKey || inst.testStatus === 'testing'"
+            (click)="testInstance('radarr', inst.id)"
+          >
+            {{ inst.testStatus === 'testing' ? 'Testing…' : 'Test' }}
+          </button>
+          @if (inst.testStatus === 'ok') {
+            <span class="check sm">✓ {{ inst.testMessage }}</span>
+          } @else if (inst.testStatus === 'error') {
+            <span class="check sm err">✗ {{ inst.testMessage }}</span>
+          } @else if (inst.rootFolders.length) {
+            <span class="check sm muted">Root: {{ inst.rootFolders.join(', ') }}</span>
+          }
+        </div>
+      </div>
+    }
+    <button class="btn-add" type="button" (click)="addRadarr()">+ Add Radarr instance</button>
+
+    <div class="token-hint">
+      Find your Plex token: Plex Web → any media → Get Info → View XML → token param in URL.
+      For Unraid, look in <code>/mnt/user/appdata/plex/Library/Application Support/Plex Media Server/Preferences.xml</code>
+      for <code>PlexOnlineToken</code>.
+    </div>
+
+    @if (error()) {
+      <div class="error-box">{{ error() }}</div>
+    }
+
+    <button
+      class="btn-connect"
+      [disabled]="saving()"
+      (click)="onSave()"
+    >
+      {{ saving() ? 'Saving…' : 'Save & Continue' }}
+    </button>
+  </div>
+</div>

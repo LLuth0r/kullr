@@ -1,0 +1,118 @@
+.season-block {
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.season-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  margin: 0 20px 0 48px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border-subtle);
+
+  .season-count {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .source-label {
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .sep {
+    color: var(--text-muted);
+  }
+
+  .season-discrepancy {
+    font-size: 12px;
+    margin-left: 4px;
+  }
+}
+
+.episode-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 80px 100px 70px;
+  align-items: center;
+  padding: 7px 0;
+  margin: 0 20px 0 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.015);
+
+  &.ep-discrepancy {
+    border-left: 2px solid #a855f7;
+    padding-left: 8px;
+    margin-left: 40px;
+  }
+}
+
+.ep-index {
+  color: var(--text-dim);
+  margin-right: 6px;
+  font-size: 11px;
+}
+
+.ep-title {
+  font-size: 12px;
+  color: #bbb;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ep-status-dual {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ep-plex-state {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+
+  &.watched {
+    color: var(--green-soft);
+  }
+}
+
+.ep-plays {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 11px;
+  color: var(--text-dim);
+
+  .ep-plex-count {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+}
+
+.ep-date {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.ep-size {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.ep-discrepancy-bar {
+  margin: 0 20px 0 50px;
+  padding: 4px 10px;
+  font-size: 10px;
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.04);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.08);
+  border-left: 2px solid #a855f7;
+}

@@ -1,0 +1,39 @@
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.008);
+  border-bottom: 1px solid var(--border);
+
+  input,
+  select {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+    color: var(--text-secondary);
+    font-family: var(--mono);
+    font-size: 11px;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: rgba(207, 122, 48, 0.35);
+    }
+  }
+
+  input {
+    flex: 1;
+    min-width: 140px;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+
+  select option {
+    background: #1a1a24;
+  }
+}

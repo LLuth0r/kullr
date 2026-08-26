@@ -1,0 +1,35 @@
+# Example compose file for Kullr.
+# Drop this into a folder alongside your existing Plex / *arr stack and
+# `docker compose up -d`. If your other containers are on a named bridge
+# network (typical for Unraid), join the same network so you can reference
+# them by container name (e.g. http://sonarr:8989).
+#
+# Adjust PUID / PGID to match the user that owns your Plex/Sonarr config
+# folders so that file permissions stay sane.
+
+services:
+  kullr:
+    image: kullr:latest
+    container_name: kullr
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8088:8080"            # host:container — change host port if 8088 is taken
+    volumes:
+      - ./config:/config       # persists API keys + URLs across upgrades
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=99                # Unraid default
+      - PGID=100               # Unraid default
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    # Uncomment + populate if your *arr / Plex containers live on a named network:
+    # networks:
+    #   - media
+
+# networks:
+#   media:
+#     external: true

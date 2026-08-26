@@ -1,0 +1,42 @@
+/* Fonts loaded via <link> in index.html to avoid build-time inlining issues */
+
+:root {
+  --bg-root: #07080c;
+  --bg-panel: rgba(255, 255, 255, 0.02);
+  --bg-hover: rgba(255, 255, 255, 0.035);
+  --bg-expanded: rgba(207, 122, 48, 0.04);
+  --border: rgba(255, 255, 255, 0.055);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+  --accent: #cf7a30;
+  --accent-glow: rgba(207, 122, 48, 0.15);
+  --text-primary: #e8e8e8;
+  --text-secondary: #999;
+  --text-dim: #5a5a5a;
+  --text-muted: #444;
+  --red: #e54545;
+  --orange: #e8943a;
+  --yellow: #d4b844;
+  --green-soft: #6cc98a;
+  --green-bright: #34c76a;
+  --mono: 'IBM Plex Mono', 'Fira Code', monospace;
+  --sans: 'Outfit', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--bg-root);
+  color: var(--text-primary);
+  font-family: var(--mono);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}

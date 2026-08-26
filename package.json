@@ -1,0 +1,38 @@
+{
+  "name": "kullr",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "dev:web": "ng serve",
+    "dev:server": "npm --prefix server run dev",
+    "dev": "concurrently -n web,api -c blue,magenta \"npm:dev:web\" \"npm:dev:server\"",
+    "build": "ng build",
+    "build:server": "npm --prefix server run build",
+    "build:all": "npm run build && npm run build:server",
+    "serve:prod": "node server/dist/index.js",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "typecheck:server": "npm --prefix server run typecheck"
+  },
+  "private": true,
+  "packageManager": "npm@10.9.4",
+  "dependencies": {
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.7",
+    "@angular/cli": "^21.2.7",
+    "@angular/compiler-cli": "^21.2.0",
+    "concurrently": "^9.1.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2"
+  }
+}

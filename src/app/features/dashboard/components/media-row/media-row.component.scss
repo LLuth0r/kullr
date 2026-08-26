@@ -1,0 +1,236 @@
+.media-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 150px 90px 110px 90px 52px 40px;
+  align-items: center;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.12s;
+  cursor: default;
+
+  &.clickable {
+    cursor: default;
+  }
+
+  .title-cell { cursor: pointer; }
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+
+  &.expanded {
+    background: var(--bg-expanded);
+  }
+
+  &.has-discrepancy {
+    border-left: 2px solid #a855f7;
+  }
+
+  &.is-selected {
+    background: rgba(207, 122, 48, 0.08);
+  }
+}
+
+.select-cell {
+  display: flex;
+  align-items: center;
+
+  input[type='checkbox'] {
+    accent-color: var(--accent);
+    cursor: pointer;
+
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
+}
+
+.cell-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .btn-row-delete {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    font-size: 14px;
+    border-radius: 4px;
+    color: var(--text-muted);
+    transition: color 0.15s, background 0.15s;
+
+    &:hover { color: var(--red, #e54545); background: rgba(229, 69, 69, 0.08); }
+  }
+
+  .row-blocked {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+}
+
+.arr-tag {
+  margin-left: 8px;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  padding: 1px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+}
+
+.title-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.title-text {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.media-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.media-year {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-left: 4px;
+}
+
+.expand-arrow {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-right: 8px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+
+  &.open {
+    transform: rotate(90deg);
+  }
+}
+
+// ── Dual status column ──
+.dual-status {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.plex-state {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+
+  &.watched {
+    color: var(--green-soft);
+  }
+}
+
+// ── Plays column with dual labels ──
+.cell-plays {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.plays-tautulli {
+  color: var(--text-secondary);
+}
+
+.plays-plex {
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.cell-size {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.cell-date {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.live-indicator {
+  font-size: 9px;
+  color: var(--green-bright);
+  background: rgba(52, 199, 106, 0.1);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+// ── Discrepancy elements ──
+.discrepancy-icon {
+  font-size: 14px;
+  cursor: help;
+  filter: grayscale(0);
+}
+
+.discrepancy-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 20px 6px 22px;
+  background: rgba(168, 85, 247, 0.05);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+  border-left: 2px solid #a855f7;
+  font-size: 11px;
+}
+
+.discrepancy-type {
+  font-weight: 700;
+  color: #a855f7;
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  padding: 2px 6px;
+  background: rgba(168, 85, 247, 0.1);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.discrepancy-detail {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+// ── Watched-by user bar ──
+.watched-by-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 20px 5px 22px;
+  background: rgba(108, 201, 138, 0.03);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.watched-by-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.watched-by-user {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green-soft);
+  background: rgba(108, 201, 138, 0.08);
+  padding: 1px 7px;
+  border-radius: 3px;
+  border: 1px solid rgba(108, 201, 138, 0.15);
+}

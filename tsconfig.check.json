@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "importHelpers": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@angular/core": ["/tmp/ngcheck/node_modules/@angular/core"],
+      "@angular/common": ["/tmp/ngcheck/node_modules/@angular/common"],
+      "@angular/common/http": ["/tmp/ngcheck/node_modules/@angular/common/types/http.d.ts"],
+      "@angular/forms": ["/tmp/ngcheck/node_modules/@angular/forms"],
+      "@angular/router": ["/tmp/ngcheck/node_modules/@angular/router"],
+      "@angular/platform-browser": ["/tmp/ngcheck/node_modules/@angular/platform-browser"],
+      "rxjs": ["/tmp/ngcheck/node_modules/rxjs"],
+      "tslib": ["/tmp/ngcheck/node_modules/tslib"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}
