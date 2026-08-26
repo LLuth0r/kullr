@@ -39,6 +39,10 @@ export class TautulliService {
 
     return (data?.data || []).map((item: any) => ({
       ...item,
+      // Tautulli's rating_key needs to line up exactly with Plex's (always
+      // stringified — see plex.service.ts) for the Map-based correlation in
+      // media-state.service.ts to find it; JS Map key lookup is type-strict.
+      rating_key: String(item.rating_key),
       file_size: parseInt(item.file_size) || 0,
       play_count: parseInt(item.play_count) || 0,
       last_played: item.last_played ? parseInt(item.last_played) : null,

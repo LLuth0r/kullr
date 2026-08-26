@@ -133,7 +133,12 @@ export class PlexService {
     sectionId: string
   ): Promise<Map<string, PlexWatchState>> {
     const aggregated = new Map<string, PlexWatchState>();
-    const data = await this.plexGet<any>(`/library/sections/${sectionId}/all`);
+    // Explicit container params — some Plex Media Server versions cap /all at
+    // a default page size (commonly 50) unless a size is requested, silently
+    // dropping everything past that cutoff from the library-wide aggregation.
+    const data = await this.plexGet<any>(
+      `/library/sections/${sectionId}/all?X-Plex-Container-Start=0&X-Plex-Container-Size=100000`
+    );
     const items = data?.MediaContainer?.Metadata || [];
     const adminUser = this.users().find((u) => u.isAdmin) ?? {
       id: '0',
@@ -220,7 +225,7 @@ export class PlexService {
   ): Promise<Map<string, PlexWatchState>> {
     const aggregated = new Map<string, PlexWatchState>();
     const data = await this.plexGet<any>(
-      `/library/metadata/${showRatingKey}/allLeaves`
+      `/library/metadata/${showRatingKey}/allLeaves?X-Plex-Container-Start=0&X-Plex-Container-Size=100000`
     );
     const episodes = data?.MediaContainer?.Metadata || [];
     const adminUser = this.users().find((u) => u.isAdmin) ?? {
