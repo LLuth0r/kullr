@@ -152,9 +152,13 @@ export class PlexService {
         lastViewedAt,
       };
 
-      // Pull the file path from the first part if present — needed by the
-      // *arr resolver later.
-      const filePath = item?.Media?.[0]?.Part?.[0]?.file as string | undefined;
+      // Pull a filesystem path needed by the *arr resolver later. Movies carry
+      // a file directly on Media/Part; shows don't (a show has many files, one
+      // per episode) but carry their root folder in Location instead — that's
+      // exactly what we need to prefix-match against a Sonarr series folder.
+      const filePath = isShow
+        ? (item?.Location?.[0]?.path as string | undefined)
+        : (item?.Media?.[0]?.Part?.[0]?.file as string | undefined);
 
       aggregated.set(rk, {
         watched: userWatched,
