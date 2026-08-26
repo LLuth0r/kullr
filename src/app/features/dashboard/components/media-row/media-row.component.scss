@@ -38,7 +38,7 @@
     accent-color: var(--accent);
     cursor: pointer;
 
-    &:disabled { opacity: 0.3; cursor: not-allowed; }
+    &:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
   }
 }
 
