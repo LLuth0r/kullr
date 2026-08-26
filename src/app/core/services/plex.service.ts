@@ -186,7 +186,33 @@ export class PlexService {
       });
     }
 
+    // The section-level listing doesn't reliably include Location for shows
+    // (it's a per-item detail field). Backfill it with one fetch per show
+    // that's missing it — in parallel, so this doesn't scale linearly with
+    // library size on the common case where it's already present.
+    const showsMissingPath = [...aggregated.entries()].filter(
+      ([rk, state]) =>
+        !state.filePath && items.find((i: any) => String(i.ratingKey) === rk)?.type === 'show'
+    );
+    if (showsMissingPath.length > 0) {
+      await Promise.all(
+        showsMissingPath.map(async ([rk, state]) => {
+          try {
+            state.filePath = await this.getShowLocation(rk);
+          } catch (e) {
+            console.warn(`Failed to backfill location for show ${rk}:`, e);
+          }
+        })
+      );
+    }
+
     return aggregated;
+  }
+
+  /** Root folder path for a single show, via its full metadata (reliably includes Location). */
+  private async getShowLocation(ratingKey: string): Promise<string | undefined> {
+    const data = await this.plexGet<any>(`/library/metadata/${ratingKey}`);
+    return data?.MediaContainer?.Metadata?.[0]?.Location?.[0]?.path as string | undefined;
   }
 
   async getShowEpisodeWatchState(
