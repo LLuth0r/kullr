@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>kullr</Name>
-  <Repository>kullr:latest</Repository>
-  <Registry/>
+  <Repository>ghcr.io/lluth0r/kullr:latest</Repository>
+  <Registry>https://github.com/LLuth0r/kullr/pkgs/container/kullr</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support/>
-  <Project/>
+  <Support>https://github.com/LLuth0r/kullr/issues</Support>
+  <Project>https://github.com/LLuth0r/kullr</Project>
   <Overview>
     Cross-references Tautulli session history with Plex-native watch state to
     surface what's safe to delete. Hooks into one or more Sonarr/Radarr
@@ -20,7 +20,7 @@
   </Overview>
   <Category>MediaApp:Other Tools:</Category>
   <WebUI>http://[IP]:[PORT:8088]/</WebUI>
-  <TemplateURL/>
+  <TemplateURL>https://raw.githubusercontent.com/LLuth0r/kullr/main/unraid-template.xml</TemplateURL>
   <Icon/>
   <ExtraParams/>
   <PostArgs/>

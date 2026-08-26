@@ -33,15 +33,15 @@ Credentials live server-side and are stamped into outbound API calls. The browse
 
 ### Option 1: Unraid (Community Apps template)
 
+Every push to `main` builds and publishes an image to `ghcr.io/lluth0r/kullr:latest` via GitHub Actions ([.github/workflows/docker-publish.yml](.github/workflows/docker-publish.yml)) — no local build needed.
+
 Until this lands in Community Apps, install via the included template:
 
-1. Build the image locally (or pull when published):
-   ```bash
-   docker build -t kullr:latest .
-   ```
-2. Open the Unraid web UI → Docker → Add Container → Template → paste the URL or path of `unraid-template.xml`.
-3. Adjust the WebUI port (default `8088`) and the appdata path (default `/mnt/user/appdata/kullr`), then Apply.
-4. Browse to `http://[unraid-ip]:8088` and fill in the config form.
+1. Open the Unraid web UI → Docker → Add Container → Template → paste `https://raw.githubusercontent.com/LLuth0r/kullr/main/unraid-template.xml`.
+2. Adjust the WebUI port (default `8088`) and the appdata path (default `/mnt/user/appdata/kullr`), then Apply.
+3. Browse to `http://[unraid-ip]:8088` and fill in the config form.
+
+> **Note:** GitHub Container Registry packages default to **private**. After the first Actions run, go to the package page (linked from the repo sidebar) → Package settings → Change visibility → Public, or Unraid won't be able to pull it anonymously.
 
 ### Option 2: docker-compose
 
