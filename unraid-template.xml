@@ -14,14 +14,14 @@
     surface what's safe to delete. Hooks into one or more Sonarr/Radarr
     instances so you can act on findings directly from the dashboard.
 
-    On first launch, browse to http://[IP]:[PORT:8088] and enter your Plex
+    On first launch, browse to http://[IP]:[PORT:8080] and enter your Plex
     URL/token, Tautulli URL/key, and any Sonarr/Radarr instances. Settings are
     saved to /config/config.json — you only enter them once.
   </Overview>
   <Category>MediaApp:Other Tools:</Category>
-  <WebUI>http://[IP]:[PORT:8088]/</WebUI>
+  <WebUI>http://[IP]:[PORT:8080]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/LLuth0r/kullr/main/unraid-template.xml</TemplateURL>
-  <Icon/>
+  <Icon>https://raw.githubusercontent.com/LLuth0r/kullr/main/public/icon.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
