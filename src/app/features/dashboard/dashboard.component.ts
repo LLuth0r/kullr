@@ -63,10 +63,16 @@ export class DashboardComponent implements OnInit {
     this.deleteTarget.set(items);
   }
 
-  onModalClosed(result: { refresh: boolean }): void {
+  onModalClosed(result: { refresh: boolean; removedKeys?: string[] }): void {
     this.deleteTarget.set([]);
-    if (result.refresh) {
-      this.selection.clear();
+    if (!result.refresh) return;
+    this.selection.clear();
+    if (result.removedKeys?.length) {
+      // Plex only drops the item after *arr's Connect notification triggers a
+      // scan, which lags the delete — an immediate rescan would bring it back.
+      // Drop it locally instead; the next Rescan picks up Plex's real state.
+      this.state.removeItems(result.removedKeys);
+    } else {
       this.state.loadLibraries();
     }
   }

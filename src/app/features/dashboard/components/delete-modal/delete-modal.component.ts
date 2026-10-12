@@ -97,7 +97,8 @@ import { FileSizePipe } from '../../../../shared/pipes/file-size.pipe';
 })
 export class DeleteModalComponent {
   readonly items = input.required<MediaItem[]>();
-  readonly closed = output<{ refresh: boolean }>();
+  /** `removedKeys`: rating keys whose files were actually deleted. */
+  readonly closed = output<{ refresh: boolean; removedKeys?: string[] }>();
 
   private configSvc = inject(ConfigService);
   private toast = inject(ToastService);
@@ -169,7 +170,12 @@ export class DeleteModalComponent {
       for (const f of failures) {
         this.toast.error(`${f.title ?? f.ratingKey}: ${f.error}`);
       }
-      this.closed.emit({ refresh: successes > 0 });
+      this.closed.emit({
+        refresh: successes > 0,
+        removedKeys: this.deleteFiles
+          ? results.filter((r) => r.ok).map((r) => r.ratingKey)
+          : [],
+      });
     } catch (e: any) {
       this.error.set(e.message);
     } finally {

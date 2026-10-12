@@ -225,11 +225,16 @@ export class MediaStateService {
 
         // Phase 3: Merge and detect discrepancies
         this.loadingMsg.set(`Analyzing ${lib.section_name}…`);
+        // Plex is the source of truth for what still exists. Only trust its
+        // absence when the Plex scan actually returned data for this library —
+        // an empty map may just mean the Plex call failed.
+        const plexAuthoritative = plexWatchMap.size > 0;
         for (const item of tautulliItems) {
           const plexState =
             plexWatchMap.get(item.rating_key) ??
             plexByTitleYear.get(this.titleYearKey(item.title, item.year)) ??
             null;
+          if (!plexState && plexAuthoritative) continue;
           const discrepancy = this.detectDiscrepancy(item, plexState);
 
           allMedia.push({
@@ -295,6 +300,11 @@ export class MediaStateService {
       this.loading.set(false);
       this.loadingMsg.set('');
     }
+  }
+
+  removeItems(ratingKeys: string[]): void {
+    const keys = new Set(ratingKeys);
+    this.mediaItems.update((items) => items.filter((i) => !keys.has(i.rating_key)));
   }
 
   async toggleShowExpansion(ratingKey: string): Promise<void> {
