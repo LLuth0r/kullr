@@ -75,6 +75,8 @@ export interface PlexWatchState {
   watchedBy: UserWatchInfo[];
   /** Filesystem path Plex sees for this item (used by *arr resolver). */
   filePath?: string;
+  /** Total bytes on disk per Plex (all parts; all episodes for a show). */
+  fileSize?: number;
   /** Used as a fallback correlation key when rating_key drifts between Tautulli's cache and Plex's live state. */
   title?: string;
   year?: string;

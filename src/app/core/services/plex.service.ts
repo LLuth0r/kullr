@@ -18,6 +18,15 @@ function parseGuids(
   return out;
 }
 
+/** Total bytes across every Media/Part of a Plex movie or episode. */
+function sumPartSizes(item: any): number {
+  let total = 0;
+  for (const media of item?.Media ?? []) {
+    for (const part of media?.Part ?? []) total += Number(part?.size) || 0;
+  }
+  return total;
+}
+
 /**
  * Calls the backend proxy at /api/plex/* — the server stamps in the X-Plex-Token
  * from saved config. The path /api/plex/tv/api/v2/... routes to plex.tv.
@@ -200,6 +209,7 @@ export class PlexService {
       const guids = parseGuids(item?.Guid);
 
       aggregated.set(rk, {
+        fileSize: isShow ? undefined : sumPartSizes(item),
         watched: userWatched,
         viewCount: isShow ? watchedEpisodes || 0 : viewCount,
         lastViewedAt,
@@ -212,6 +222,18 @@ export class PlexService {
         year: item.year != null ? String(item.year) : undefined,
         ...guids,
       });
+    }
+
+    // Show-level metadata carries no file sizes — sum them from a single
+    // section-wide episode listing (type=4) rather than one call per show.
+    if (items.some((i: any) => i.type === 'show')) {
+      const epData = await this.plexGet<any>(
+        `/library/sections/${sectionId}/all?type=4&X-Plex-Container-Start=0&X-Plex-Container-Size=1000000`
+      );
+      for (const ep of epData?.MediaContainer?.Metadata || []) {
+        const state = aggregated.get(String(ep.grandparentRatingKey));
+        if (state) state.fileSize = (state.fileSize ?? 0) + sumPartSizes(ep);
+      }
     }
 
     // The section-level listing doesn't reliably include Location for shows
@@ -282,6 +304,7 @@ export class PlexService {
         viewOffset,
         watchedBy: userWatched ? [userInfo] : [],
         filePath,
+        fileSize: sumPartSizes(ep),
       });
     }
 

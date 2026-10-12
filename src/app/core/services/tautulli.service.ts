@@ -35,9 +35,9 @@ export class TautulliService {
       length: '2000',
       order_column: 'file_size',
       order_dir: 'desc',
-      // Without this Tautulli serves its cached media-info table, which isn't
-      // invalidated when Plex removes an item — deleted media lingers forever.
-      refresh: 'true',
+      // Deliberately no refresh=true: a refresh rebuilds Tautulli's table
+      // without file sizes (its UI fills them in via a separate, non-API
+      // call). Deleted items are filtered out against live Plex instead.
     });
 
     return (data?.data || []).map((item: any) => ({

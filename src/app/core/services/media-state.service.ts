@@ -239,6 +239,8 @@ export class MediaStateService {
 
           allMedia.push({
             ...item,
+            // Plex's live size wins; Tautulli's cached size is only a fallback.
+            file_size: plexState?.fileSize || item.file_size,
             plex: plexState ?? undefined,
             discrepancy,
           });
@@ -337,6 +339,7 @@ export class MediaStateService {
           const plexEp = plexEpMap.get(ep.rating_key) || null;
           if (plexEp) {
             (ep as Episode).plex = plexEp;
+            ep.file_size = plexEp.fileSize || ep.file_size;
             (ep as Episode).discrepancy = this.detectEpisodeDiscrepancy(ep, plexEp);
             if (plexEp.watched) plexWatchedCount++;
           } else {
